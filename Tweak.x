@@ -7,17 +7,24 @@
 
 	if([UIApplication sharedApplication].applicationState != UIApplicationStateInactive)
 	{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-			NSString *warning = [[infoDictionary objectForKey:@"CFBundleDisplayName"] stringByAppendingString:@" Access Clipboard!"];
-			MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-			// Set the text mode to show only text.
-			hud.mode = MBProgressHUDModeText;
-			hud.userInteractionEnabled = NO;
-			hud.label.text = NSLocalizedString(warning, @"HUD message title");
-			// Move to bottm center.
-			hud.offset = CGPointMake(0.f, -MBProgressMaxOffset);
-			[hud hideAnimated:YES afterDelay:1.f];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+            NSString* warning=nil;
+            NSString* BundleDisplayName=[infoDictionary objectForKey:@"CFBundleDisplayName"];
+            if(BundleDisplayName){
+                warning = [BundleDisplayName stringByAppendingString:@" Access Clipboard!"];
+            }
+            else{
+                warning = [[infoDictionary objectForKey:@"CFBundleName"] stringByAppendingString:@" Access Clipboard!"];
+            }	
+            MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+            // Set the text mode to show only text.
+            hud.mode = MBProgressHUDModeText;
+            hud.userInteractionEnabled = NO;
+            hud.label.text = NSLocalizedString(warning, @"HUD message title");
+            // Move to bottm center.
+            hud.offset = CGPointMake(0.f, -MBProgressMaxOffset);
+            [hud hideAnimated:YES afterDelay:1.f];
 	});
 
 
